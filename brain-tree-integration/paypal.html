@@ -1,0 +1,90 @@
+<!-- Load the client component. -->
+<script src="https://js.braintreegateway.com/web/3.76.2/js/client.min.js"></script>
+
+<!-- Load the PayPal Checkout component. -->
+<script src="https://js.braintreegateway.com/web/3.76.2/js/paypal-checkout.min.js"></script>
+
+
+<!-- Load the PayPal JS SDK with your PayPal Client ID-->
+<script src="https://www.paypal.com/sdk/js?client-id=AT2sR5jJpY0rhwNFKeJLvH8MvILUBmCAj7HxKHBwBUMOyBujFc39wfTptLwTxCakJtt9I5iFtJLEXe07"></script>
+
+<!-- Load the Braintree components -->
+<script src="https://js.braintreegateway.com/web/3.76.2/js/client.min.js"></script>
+<script src="https://js.braintreegateway.com/web/3.76.2/js/paypal-checkout.min.js"></script>
+
+
+
+<div id="paypal-button"></div>
+
+
+
+
+<script>
+// fetch('https://cp8q8v8b8h.execute-api.us-east-1.amazonaws.com/production/guides').then(console.log)
+const CLIENT_AUTHORIZATION = "eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJleUowZVhBaU9pSktWMVFpTENKaGJHY2lPaUpGVXpJMU5pSXNJbXRwWkNJNklqSXdNVGd3TkRJMk1UWXRjMkZ1WkdKdmVDSXNJbWx6Y3lJNkltaDBkSEJ6T2k4dllYQnBMbk5oYm1SaWIzZ3VZbkpoYVc1MGNtVmxaMkYwWlhkaGVTNWpiMjBpZlEuZXlKbGVIQWlPakUyTWpFd09ESXpOeklzSW1wMGFTSTZJbVl6TjJJMllXWXpMVEZrWWpBdE5EUTVNUzFpWmpWaExUUXlZbU00WmpBMk1EWmtOU0lzSW5OMVlpSTZJbmN6TmpNMGFIcG5hekkxTm0wM1oyTWlMQ0pwYzNNaU9pSm9kSFJ3Y3pvdkwyRndhUzV6WVc1a1ltOTRMbUp5WVdsdWRISmxaV2RoZEdWM1lYa3VZMjl0SWl3aWJXVnlZMmhoYm5RaU9uc2ljSFZpYkdsalgybGtJam9pZHpNMk16Um9lbWRyTWpVMmJUZG5ZeUlzSW5abGNtbG1lVjlqWVhKa1gySjVYMlJsWm1GMWJIUWlPbVpoYkhObGZTd2ljbWxuYUhSeklqcGJJbTFoYm1GblpWOTJZWFZzZENKZExDSnpZMjl3WlNJNld5SkNjbUZwYm5SeVpXVTZWbUYxYkhRaVhTd2liM0IwYVc5dWN5STZlMzE5LkxFWE14SktOb2hocWZfUDdOekdMSGdiT1pEdDJGZ292ZVVJU0JhM254dE5kM1lBTU1za2x3VzRjTmhEZ2dLZUhFeDgxR2FmdG9nSGtQM25FYmdocVdnIiwiY29uZmlnVXJsIjoiaHR0cHM6Ly9hcGkuc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbTo0NDMvbWVyY2hhbnRzL3czNjM0aHpnazI1Nm03Z2MvY2xpZW50X2FwaS92MS9jb25maWd1cmF0aW9uIiwiZ3JhcGhRTCI6eyJ1cmwiOiJodHRwczovL3BheW1lbnRzLnNhbmRib3guYnJhaW50cmVlLWFwaS5jb20vZ3JhcGhxbCIsImRhdGUiOiIyMDE4LTA1LTA4IiwiZmVhdHVyZXMiOlsidG9rZW5pemVfY3JlZGl0X2NhcmRzIl19LCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvdzM2MzRoemdrMjU2bTdnYy9jbGllbnRfYXBpIiwiZW52aXJvbm1lbnQiOiJzYW5kYm94IiwibWVyY2hhbnRJZCI6InczNjM0aHpnazI1Nm03Z2MiLCJhc3NldHNVcmwiOiJodHRwczovL2Fzc2V0cy5icmFpbnRyZWVnYXRld2F5LmNvbSIsImF1dGhVcmwiOiJodHRwczovL2F1dGgudmVubW8uc2FuZGJveC5icmFpbnRyZWVnYXRld2F5LmNvbSIsInZlbm1vIjoib2ZmIiwiY2hhbGxlbmdlcyI6W10sInRocmVlRFNlY3VyZUVuYWJsZWQiOnRydWUsImFuYWx5dGljcyI6eyJ1cmwiOiJodHRwczovL29yaWdpbi1hbmFseXRpY3Mtc2FuZC5zYW5kYm94LmJyYWludHJlZS1hcGkuY29tL3czNjM0aHpnazI1Nm03Z2MifSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwiZW52aXJvbm1lbnROb05ldHdvcmsiOmZhbHNlLCJ1bnZldHRlZE1lcmNoYW50IjpmYWxzZSwiYWxsb3dIdHRwIjp0cnVlLCJkaXNwbGF5TmFtZSI6IlRlc3QgQ29tcGFueSIsImNsaWVudElkIjoiQVNKWWJXSENuTjFiUlotd2NCeTlkSTgzMG1zWS1aTDBPaENadXJxdHBFQjdmTFlVN2U2V3FYQThNZExlRTJiQkpmSmFza05qbW5QYUR4QnEiLCJwcml2YWN5VXJsIjoiaHR0cDovL2V4YW1wbGUuY29tL3BwIiwidXNlckFncmVlbWVudFVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbS90b3MiLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJlbnZpcm9ubWVudCI6Im9mZmxpbmUiLCJicmFpbnRyZWVDbGllbnRJZCI6Im1hc3RlcmNsaWVudDMiLCJtZXJjaGFudEFjY291bnRJZCI6InRlc3Rjb21wYW55IiwiY3VycmVuY3lJc29Db2RlIjoiVVNEIn19"
+
+    // Create a client.
+braintree.client.create({
+  authorization: CLIENT_AUTHORIZATION
+}).then(function (clientInstance) {
+  // Create a PayPal Checkout component.
+  return braintree.paypalCheckout.create({
+    client: clientInstance
+  });
+}).then(function (paypalCheckoutInstance) {
+  return paypalCheckoutInstance.loadPayPalSDK({
+    currency: 'USD',
+    intent: 'capture'
+  });
+}).then(function (paypalCheckoutInstance) {
+  return paypal.Buttons({
+    fundingSource: paypal.FUNDING.PAYPAL,
+
+    createOrder: function () {
+      return paypalCheckoutInstance.createPayment({
+        flow: 'checkout', // Required
+        amount: 9.72, // Required
+        currency: 'USD', // Required, must match the currency passed in with loadPayPalSDK
+
+        intent: 'capture', // Must match the intent passed in with loadPayPalSDK
+
+        
+        enableShippingAddress: true,
+        shippingAddressEditable: false,
+        shippingAddressOverride: {
+          recipientName: 'Scruff McGruff',
+          line1: '1234 Main St.',
+          line2: 'Unit 1',
+          city: 'Chicago',
+          countryCode: 'US',
+          postalCode: '60652',
+          state: 'IL',
+          phone: '123.456.7890'
+        },
+      billingAgreementDetails: {
+        description: 'Description of the billng agreement to display to the customer'
+      }
+      });
+    },
+
+    onApprove: function (data, actions) {
+      return paypalCheckoutInstance.tokenizePayment(data).then(function (payload) {
+        // Submit `payload.nonce` to your server
+        console.log(payload)
+      });
+    },
+
+    onCancel: function (data) {
+      console.log('PayPal payment cancelled', JSON.stringify(data, 0, 2));
+    },
+
+    onError: function (err) {
+      console.error('PayPal error', err);
+    }
+  }).render('#paypal-button');
+}).then(function () {
+  // The PayPal button will be rendered in an html element with the ID
+  // `paypal-button`. This function will be called when the PayPal button
+  // is set up and ready to be used
+});
+</script>

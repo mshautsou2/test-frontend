@@ -1,0 +1,16 @@
+{
+  "name": "atlasguides-web-common",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Mikita Shautsou <nikits.shevtsou@innowise-group.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/socket.io-client": "^1.4.36",
+    "axios": "^0.21.1",
+    "socket.io-client": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "tslint": "^6.1.3"
+  }
+}
